@@ -20,9 +20,13 @@ public class Aficionado extends Usuario {
             this.rol = Rol.A; // El rol de aficionado siempre es A
 }
 
+    // Implementación temporal: la lógica real depende de la clase Compra que aún no existe.
     @Override
     public void consultarEntradas(){
-        System.out.println("Consultando entradas como aficionado...");
+        System.out.println("Consultando entradas como aficionado..."); 
+
+// Método comprar() queda pendiente de implementación.
+// Depende de las clases Compra, Kit, Zona y TipoCompra que aún no existen en el repositorio.
 
 }
 
@@ -46,7 +50,7 @@ public void setPaisFavorito(String paisFavorito){
     this.paisFavorito = paisFavorito;
 }
 
-// Método toString() usando super.toString() para llamar al método del padre
+// Sobrescritura de toString() con super.toString()
 
     @Override
     public String toString(){

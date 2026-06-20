@@ -21,14 +21,14 @@ public class Organizador extends Usuario{
            
         }
 
-    //Método consultarEntradas()
+    //Método consultarEntradas() Implementación temporal: la lógica real depende de la clase Compra que aún no existe.
         @Override
         public void consultarEntradas(){
         System.out.println("Consultando entradas como organizador...");
 
      }
     
-     //Método generarReporte()
+     //Método generarReporte() Implementación temporal: la lógica real depende de clases que aún no existen.
 
      public void generarReporte(){
         System.out.println("Generando reporte...");
@@ -55,7 +55,7 @@ public void setCargo(String cargo){
     this.cargo = cargo;
 }
 
-// Método toString() usando super.toString() para llamar al método del padre
+//Sobrescritura de toString() con super.toString()
 
     @Override
     public String toString(){
