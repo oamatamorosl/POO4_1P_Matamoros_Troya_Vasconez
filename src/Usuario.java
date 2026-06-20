@@ -6,7 +6,7 @@ public abstract class Usuario {
     protected String usuario;
     protected String contrasena;
     protected String correo;
-    //protected Rol rol;
+    protected Rol rol;
 
     public Usuario(String codigoUnico, String cedula, String nombres, String apellidos, String usuario, String contrasena, String correo) {
         this.codigoUnico = codigoUnico;
@@ -31,7 +31,7 @@ public abstract class Usuario {
                 ", Apellidos = " + apellidos +
                 ", Usuario = " + usuario +
                 ", Correo = " + correo +
-                //", Rol = " + rol +
+                ", Rol = " + rol +
                 " }";
     }
 
@@ -93,11 +93,12 @@ public abstract class Usuario {
         this.correo = correo;
     }
 
-    //public Rol getRol() {
-        //return rol;
-    //}
+    public Rol getRol() {
+        return rol;
+    }
 
-    //public void setRol(Rol rol) {
-        //this.rol = rol;
-    //}
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
 }
