@@ -1,10 +1,10 @@
-//Aficioando clase hija de Usuario
+//Aficionado clase hija de Usuario
 
 public class Aficionado extends Usuario {
     private String celular;
     private String paisFavorito;
 
-    //Constructor clase hija 
+    //Constructor clase Aficionado
     public Aficionado(String codigoUnico, String cedula, String nombres, 
                     String apellidos, String usuario, String contrasena, 
                     String correo, String celular,String paisFavorito){
@@ -22,7 +22,7 @@ public class Aficionado extends Usuario {
 
     @Override
     public void consultarEntradas(){
-        System.out.println("Consultando entradas del aficionado...");
+        System.out.println("Consultando entradas como aficionado...");
 
 }
 
@@ -51,7 +51,7 @@ public void setPaisFavorito(String paisFavorito){
     @Override
     public String toString(){
     return super.toString() + 
-    "Datos únicos de Aficionado[Celular: " +this.celular+
+    ", Datos únicos de Aficionado[Celular: " +this.celular+
     ", País Favorito: " +this.paisFavorito+ "]";
 
 }
