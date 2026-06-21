@@ -7,6 +7,8 @@ public class Partido {
     private String ciudad;
     private String  fase;
 
+    //Constructor
+
      public Partido(String codigo, String local, String visitante, String estadio, String ciudad, String fase) {
         this.codigo = codigo;
         this.local =  local ;
@@ -16,7 +18,7 @@ public class Partido {
         this.fase =    fase;
     }
 
-
+    //Getters y setters
     public String getCodigo() { 
         return  codigo; 
     }
