@@ -7,8 +7,8 @@ para partidos del Mundial 2026, donde intervienen aficionados y organizadores de
 
 ## Integrantes
 - Oscar Matamoros
-- (Nombre Compañero 2)
-- (Nombre Compañero 3)
+- Sebastian Vasconez 
+- (Aidan Troya
 
 ## Tecnologías
 - Java
