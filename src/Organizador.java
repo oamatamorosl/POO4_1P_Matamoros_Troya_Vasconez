@@ -60,8 +60,8 @@ public void setCargo(String cargo){
     @Override
     public String toString(){
         return super.toString() + 
-        ", Datos únicos de Organizador[Empresa: " +this.empresa+
-        ", Cargo: " + this.cargo+ "]";
+        ", Datos únicos de Organizador: {Empresa = " +this.empresa+
+        ", Cargo = " + this.cargo+ "}";
 
 }
 

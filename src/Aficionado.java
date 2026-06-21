@@ -55,8 +55,8 @@ public void setPaisFavorito(String paisFavorito){
     @Override
     public String toString(){
     return super.toString() + 
-    ", Datos únicos de Aficionado[Celular: " +this.celular+
-    ", País Favorito: " +this.paisFavorito+ "]";
+    ", Datos únicos de Aficionado: {Celular = " +this.celular+
+    ", País Favorito = " +this.paisFavorito+ "}";
 
 }
 
