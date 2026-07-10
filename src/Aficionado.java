@@ -25,8 +25,17 @@ public class Aficionado extends Usuario {
     public void consultarEntradas(){
         System.out.println("Consultando entradas como aficionado..."); 
 
-// Método comprar() queda pendiente de implementación.
-// Depende de las clases Compra, Kit, Zona y TipoCompra que aún no existen en el repositorio.
+public void consultarPartidos() { //HAY QUE HACER LA LOGICA DE ESTE METODO
+    System.out.println("Consultando partidos...");
+}
+
+public void comprar(Partido partido, Zona zona, int cantidad, String tarjeta) {//HAY QUE HACER LA LOGICA DE ESTE METODO
+    System.out.println("Comprando entrada...");
+}
+
+public void comprar(Kit kit, String tarjeta) {//HAY QUE HACER LA LOGICA DE ESTE METODO
+    System.out.println("Comprando kit...");
+}
 
 }
 
