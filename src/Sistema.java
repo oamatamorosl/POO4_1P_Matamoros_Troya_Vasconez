@@ -52,12 +52,30 @@ public class Sistema {
     // ===================== NOTIFICAR (sobrecarga) =====================
     //Se sobrecarga el método con atributos de diferentes tipos.
 
-    public void notificar(Aficionado aficionado, Compra compra) {
-
+    public void notificar(Aficionado aficionado, Compra compra, Partido partido) {
+        System.out.println("De: correoSistema");
+        System.out.println("Para: " + aficionado.getCorreo());
+        System.out.println("Asunto: Compra de entrada realizada");
+        System.out.println("Estimado/a " + aficionado.getNombres() + " " + aficionado.getApellidos() + ",");
+        System.out.println("Su compra ha sido registrada exitosamente con el código " + compra.getCodigo() + " el día " + compra.getFechaCompra() + ".");
+        System.out.println("Partido: " + partido.getLocal() + " vs " + partido.getVisitante());
+        System.out.println("Código del partido: " + compra.getCodigoReferencia());
+        System.out.println("Cantidad: " + compra.getCantidad());
+        System.out.println("Valor pagado: $" + compra.getValorPagado());
+        System.out.println("Gracias por adquirir sus entradas para el Mundial. Recuerde conservar el código de compra para futuras consultas.");
     }
 
-    public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
-
+public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
+        System.out.println("De: correoSistema");
+        System.out.println("Para: " + aficionado.getCorreo());
+        System.out.println("Asunto: Compra de kit de entradas realizada");
+        System.out.println("Estimado/a " + aficionado.getNombres() + " " + aficionado.getApellidos() + ",");
+        System.out.println("Su compra ha sido registrada exitosamente con el código " + compra.getCodigo() + " el día " + compra.getFechaCompra() + ".");
+        System.out.println("Kit adquirido: " + kit.getNombre());
+        System.out.println("Descripción: " + kit.getDescripcion());
+        System.out.println("Cantidad: " + compra.getCantidad());
+        System.out.println("Valor pagado: $" + compra.getValorPagado());
+        System.out.println("Gracias por adquirir su kit para el Mundial. Recuerde conservar el código de compra para futuras consultas.");
     }
 
     public void notificar(Organizador organizador, ArrayList<Compra> compras) {
