@@ -18,9 +18,7 @@ public abstract class Usuario {
         this.correo = correo;
     }
 
-    public void consultarEntradas() {
-
-    }
+    public void consultarEntradas();
 
     @Override
     public String toString() {
