@@ -1,6 +1,18 @@
+package com.pooespol.sistema;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+
+import com.pooespol.enums.TipoCompra;
+import com.pooespol.modelo.Aficionado;
+import com.pooespol.modelo.Compra;
+import com.pooespol.modelo.Kit;
+import com.pooespol.modelo.Organizador;
+import com.pooespol.modelo.Partido;
+import com.pooespol.modelo.Usuario;
+import com.pooespol.util.ManejoArchivos;
+
+import java.text.SimpleDateFormat;
 
 public class Sistema {
 
@@ -23,21 +35,141 @@ public class Sistema {
     }
 
     //  CARGA DE DATOS 
-
+    // Se usa la clase ManejoArchivos para leer
+ 
     public void cargarUsuarios() {
+        ArrayList<String> lineasUsuarios = ManejoArchivos.LeeFichero("usuarios.txt");
+        ArrayList<String> lineasAficionados = ManejoArchivos.LeeFichero("aficionados.txt");
+        ArrayList<String> lineasOrganizadores = ManejoArchivos.LeeFichero("organizadores.txt");
 
+        for (String linea : lineasUsuarios) {
+            String[] datos = linea.split("\\|");
+            String codigoUnico = datos[0];
+            String cedula = datos[1];
+            String nombres = datos[2];
+            String apellidos = datos[3];
+            String usuario = datos[4];
+            String contrasena = datos[5];
+            String correo = datos[6];
+            String rolTexto = datos[7];
+
+            if (rolTexto.equals("A")) {
+                for (String lineaAf : lineasAficionados) {
+                    String[] datosAf = lineaAf.split("\\|");
+                    if (datosAf[0].equals(codigoUnico)) {
+                        String celular = datosAf[4];
+                        String paisFavorito = datosAf[5];
+                        Aficionado af = new Aficionado(codigoUnico, cedula, nombres, apellidos,
+                                usuario, contrasena, correo, celular, paisFavorito);
+                        listaUsuarios.add(af);
+                        break;
+                    }
+                }
+            } else if (rolTexto.equals("O")) {
+                for (String lineaOrg : lineasOrganizadores) {
+                    String[] datosOrg = lineaOrg.split("\\|");
+                    if (datosOrg[0].equals(codigoUnico)) {
+                        String empresa = datosOrg[4];
+                        String cargo = datosOrg[5];
+                        Organizador org = new Organizador(codigoUnico, cedula, nombres, apellidos,
+                                usuario, contrasena, correo, empresa, cargo);
+                        listaUsuarios.add(org);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     public void cargarPartidos() {
+        ArrayList<String> lineas = ManejoArchivos.LeeFichero("partidos.txt");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+        for (String linea : lineas) {
+            String[] d = linea.split("\\|");
+            try {
+                String codigo = d[0];
+                String local = d[1];
+                String visitante = d[2];
+                Date fecha = sdf.parse(d[3]);
+                String estadio = d[4];
+                String ciudad = d[5];
+                int capacidad = Integer.parseInt(d[6]);
+                int dispGeneral = Integer.parseInt(d[7]);
+                int dispPreferencial = Integer.parseInt(d[8]);
+                int dispVIP = Integer.parseInt(d[9]);
+                String fase = d[10];
+
+                // El documento no incluye precios por zona en partidos.txt,
+                // se dejan en 0.0 (pendiente de aclarar con la docente).
+                double precioGeneral = 0.0;
+                double precioPreferencial = 0.0;
+                double precioVIP = 0.0;
+
+                Partido p = new Partido(codigo, local, visitante, estadio, ciudad, fase,
+                        fecha, capacidad, dispGeneral, dispPreferencial, dispVIP,
+                        precioGeneral, precioPreferencial, precioVIP);
+                listaPartidos.add(p);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    // Requiere que listaPartidos ya esté cargada, porque resuelve los
+    // códigos de partido del archivo (separados por coma) a objetos Partido.
     public void cargarKits() {
+        ArrayList<String> lineas = ManejoArchivos.LeeFichero("kits.txt");
 
+        for (String linea : lineas) {
+            String[] d = linea.split("\\|");
+            String codigo = d[0];
+            String nombre = d[1];
+            String descripcion = d[2];
+            String[] codigosPartidos = d[3].split(",");
+            double precio = Double.parseDouble(d[4]);
+            int disponibles = Integer.parseInt(d[5]);
+
+            ArrayList<Partido> partidosDelKit = new ArrayList<>();
+            for (String codPartido : codigosPartidos) {
+                for (Partido p : listaPartidos) {
+                    if (p.getCodigo().equals(codPartido)) {
+                        partidosDelKit.add(p);
+                        break;
+                    }
+                }
+            }
+
+            Kit kit = new Kit(codigo, nombre, descripcion, partidosDelKit, precio, disponibles);
+            listaKits.add(kit);
+        }
     }
 
     public void cargarCompras() {
+        ArrayList<String> lineas = ManejoArchivos.LeeFichero("compras.txt");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+        for (String linea : lineas) {
+            String[] d = linea.split("\\|");
+            try {
+                String codigoArchivo = d[0];
+                TipoCompra tipo = TipoCompra.valueOf(d[1]);
+                String codigoReferencia = d[2];
+                Date fechaCompra = sdf.parse(d[3]);
+                int cantidad = Integer.parseInt(d[4]);
+                double valorPagado = Double.parseDouble(d[5]);
+                String codigoAficionado = d[6];
+
+                Compra c = new Compra(tipo, codigoReferencia, fechaCompra, cantidad, valorPagado, codigoAficionado);
+                // El constructor genera un código nuevo con el contador
+                // estático; aquí se sobreescribe con el código real que
+                // ya existía en el archivo, para no perder esa referencia.
+                c.setCodigo(codigoArchivo);
+                listaCompras.add(c);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // SESIÓN Y MENÚ

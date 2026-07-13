@@ -1,3 +1,4 @@
+package com.pooespol.modelo;
 import java.util.Date;
 
 public class Partido {

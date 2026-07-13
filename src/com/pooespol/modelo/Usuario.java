@@ -1,3 +1,6 @@
+package com.pooespol.modelo;
+import com.pooespol.enums.Rol;
+
 public abstract class Usuario {
     protected String codigoUnico;
     protected String cedula;

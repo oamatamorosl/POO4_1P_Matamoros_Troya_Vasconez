@@ -1,4 +1,7 @@
+package com.pooespol.modelo;
 //Organizador clase hija de Usuario
+
+import com.pooespol.enums.Rol;
 
 public class Organizador extends Usuario{
         private String empresa;

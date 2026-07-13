@@ -1,4 +1,8 @@
+package com.pooespol.modelo;
 //Aficionado clase hija de Usuario
+
+import com.pooespol.enums.Rol;
+import com.pooespol.enums.Zona;
 
 public class Aficionado extends Usuario {
     private String celular;

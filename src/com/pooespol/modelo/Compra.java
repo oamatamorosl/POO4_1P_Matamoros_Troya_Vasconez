@@ -1,4 +1,7 @@
+package com.pooespol.modelo;
 import java.util.Date;
+
+import com.pooespol.enums.TipoCompra;
 
 public class Compra {
 
