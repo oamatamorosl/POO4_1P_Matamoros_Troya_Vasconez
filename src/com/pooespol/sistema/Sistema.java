@@ -258,7 +258,7 @@ public class Sistema {
                         aficionado.comprar(null, null, 0, null);
                         break;
                     case 3:
-                        aficionado.comprar(null, null);
+                        aficionado.comprar(null);
                         break;
                     case 4:
                         aficionado.consultarEntradas();

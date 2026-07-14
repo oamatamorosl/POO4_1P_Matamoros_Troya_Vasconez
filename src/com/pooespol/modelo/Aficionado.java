@@ -5,6 +5,7 @@ import com.pooespol.enums.Zona;
 import com.pooespol.sistema.Sistema;
 import com.pooespol.util.ManejoArchivos;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Aficionado extends Usuario {
     private String celular;
@@ -113,7 +114,7 @@ public class Aficionado extends Usuario {
             }
 
 
-           //Registrar compra
+           //Registrar compra entrada
             String linea = compra.getCodigo() + "|" + compra.getTipo() + "|" + compra.getCodigoReferencia() + "|" + compra.getFechaCompra() + "|" + compra.getCantidad() + "|" + compra.getValorPagado() + "|" + compra.getCodigoAficionado();
 
             ManejoArchivos.EscribirArchivo("compras.txt", linea);   
@@ -126,19 +127,70 @@ public class Aficionado extends Usuario {
             } else{
                 System.out.println("No hay suficientes entradas");
             }
-       
-       
-       
-       
-       
+     
         
     }
 
 // Método comprar() para Kit
-    public void comprar(Kit kit, String tarjeta) {
-        System.out.println("Comprando kit...");
+    public void comprar(String tarjeta) {
+
+        System.out.println("===== KITS DISPONIBLES =====");
+
+        //Mostrar kits
+        for(Kit k : Sistema.listaKits){
+            System.out.println(k);
+        }
+
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese el código del kit: ");
+        String codigo = sc.nextLine();
+
+        
+        
+        Kit kitElegido = null;
 
 
+        for (Kit k: Sistema.listaKits){
+            if(k.getCodigo().equals(codigo)){
+                kitElegido = k;
+            }
+        }
+
+
+
+
+        if (kitElegido == null){
+            System.out.println("Código de kit inválido");
+        
+        }else{
+            
+            if (kitElegido.getDisponibles() >= 1){
+
+                
+                System.out.println("Precio: " + kitElegido.getPrecio());
+                System.out.println("Pago procesado exitosamente");
+
+                Compra compra = new Compra(TipoCompra.KIT, kitElegido.getCodigo(), new Date(), 1, kitElegido.getPrecio(), this.getCodigoUnico());
+                Sistema.listaCompras.add(compra);
+
+                kitElegido.setDisponibles(kitElegido.getDisponibles() - 1);
+
+
+                //Notifiación
+                Sistema.notificar(this, compra, kitElegido);
+
+                //Registrar compra kit
+                String linea = compra.getCodigo() + "|" + compra.getTipo() + "|" + compra.getCodigoReferencia() + "|" + compra.getFechaCompra() + "|" + compra.getCantidad() + "|" + compra.getValorPagado() + "|" + compra.getCodigoAficionado();
+                ManejoArchivos.EscribirArchivo("compras.txt", linea);
+
+
+            }else{
+                System.out.println("No hay kits disponibles");
+            }
+
+        }
+        
+    
         
     }
     // Getters

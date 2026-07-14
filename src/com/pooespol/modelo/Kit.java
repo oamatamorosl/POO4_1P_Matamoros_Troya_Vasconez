@@ -25,12 +25,16 @@ public class Kit {
     }
 
     // ===================== MÉTODOS =====================
-    //Se comenta el método toString() hasta que se establezca lo que se desea imprimir.
 
-    //@Override    
-    //public String toString() {
-    //    return;
-    //}
+    @Override    
+    public String toString() {
+       return "Código: " + codigo +
+              "\nNombre: " + nombre +
+              "\nDescripción: " + descripcion +
+              "\nPartidos: " + partidos +
+              "\nPrecio: " + precio +
+              "\nDisponibles: " + disponibles;
+    }
 
     // ===================== GETTERS Y SETTERS =====================
 
