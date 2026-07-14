@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 import com.pooespol.enums.TipoCompra;
+import com.pooespol.enums.Zona;
 import com.pooespol.modelo.Aficionado;
 import com.pooespol.modelo.Compra;
 import com.pooespol.modelo.Kit;
@@ -273,12 +274,78 @@ public class Sistema {
                     case 1:
                         aficionado.consultarPartidos();
                         break;
-                    case 2:
-                        aficionado.comprar(null, null, 0, null);
+                    case 2: {
+                        aficionado.consultarPartidos();
+                        System.out.print("Ingrese el codigo del partido: ");
+                        String codigoPartido = scanner.nextLine();
+
+                        Partido partidoElegido = null;
+                        for (Partido p : listaPartidos) {
+                            if (p.getCodigo().equals(codigoPartido)) {
+                                partidoElegido = p;
+                                break;
+                            }
+                        }
+
+                        if (partidoElegido == null) {
+                            System.out.println("Codigo de partido invalido.");
+                            break;
+                        }
+
+                        System.out.println("Zonas: 1. GENERAL  2. PREFERENCIAL  3. VIP");
+                        System.out.print("Elija zona (1-3): ");
+                        int opcZona = scanner.nextInt();
+                        scanner.nextLine();
+
+                        Zona zonaElegida = null;
+                        if (opcZona == 1) zonaElegida = Zona.GENERAL;
+                        else if (opcZona == 2) zonaElegida = Zona.PREFERENCIAL;
+                        else if (opcZona == 3) zonaElegida = Zona.VIP;
+
+                        if (zonaElegida == null) {
+                            System.out.println("Zona invalida.");
+                            break;
+                        }
+
+                        System.out.print("Ingrese cantidad de entradas: ");
+                        int cantidad = scanner.nextInt();
+                        scanner.nextLine();
+
+                        System.out.print("Ingrese numero de tarjeta: ");
+                        String tarjeta = scanner.nextLine();
+
+                        aficionado.comprar(partidoElegido, zonaElegida, cantidad, tarjeta);
                         break;
-                    case 3:
-                        aficionado.comprar(null, null);
+                    }
+                    case 3: {
+                        System.out.println("===== KITS DISPONIBLES =====");
+                        for (Kit k : listaKits) {
+                            System.out.println(k);
+                            System.out.println("--------------------");
+                        }
+
+                        System.out.print("Ingrese el codigo del kit: ");
+                        String codigoKit = scanner.nextLine();
+
+                        Kit kitElegido = null;
+                        for (Kit k : listaKits) {
+                            if (k.getCodigo().equals(codigoKit)) {
+                                kitElegido = k;
+                                break;
+                            }
+                        }
+
+                        if (kitElegido == null) {
+                            System.out.println("Codigo de kit invalido.");
+                            break;
+                        }
+
+                        System.out.print("Ingrese numero de tarjeta: ");
+                        String tarjeta = scanner.nextLine();
+
+                        aficionado.comprar(kitElegido, tarjeta);
                         break;
+                    }
                     case 4:
                         aficionado.consultarEntradas();
                         break;
@@ -391,9 +458,9 @@ public class Sistema {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.starttls.required", "true");   
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");  
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2");     
+        props.put("mail.smtp.starttls.required", "true");
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
