@@ -2,6 +2,7 @@ package com.pooespol.modelo;
 //Organizador clase hija de Usuario
 
 import com.pooespol.enums.Rol;
+import com.pooespol.enums.TipoCompra;
 import com.pooespol.sistema.Sistema;
 
 public class Organizador extends Usuario{
@@ -43,7 +44,31 @@ public class Organizador extends Usuario{
      
 
      public void generarReporte(){
-        System.out.println("Generando reporte...");
+
+        int totalEntradas = 0;
+        int totalKits = 0;
+        double totalRecaudado = 0;
+        
+        for (Compra compra : Sistema.listaCompras){
+            if (compra.getTipo() == TipoCompra.ENTRADA){
+                totalEntradas++;
+
+            } else if (compra.getTipo() == TipoCompra.KIT) {
+                totalKits++;   
+            }
+
+            totalRecaudado += compra.getValorPagado(); 
+
+            }
+        
+        
+        System.out.println("===== GENERAR REPORTE DE VENTAS =====");
+        System.out.println("Resumen de ventas registradas:");
+        System.out.println("Total de compras: " + Sistema.listaCompras.size());
+        System.out.println("Compras por tipo: ");
+        System.out.println("Entradas: " + totalEntradas);
+        System.out.println("Kits: " + totalKits);
+         System.out.println("Monto total recaudado: " + totalRecaudado);
      }
 
 
