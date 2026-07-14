@@ -17,10 +17,11 @@ import java.text.SimpleDateFormat;
 public class Sistema {
 
     // ===================== ATRIBUTOS =====================
-    private static ArrayList<Usuario> listaUsuarios;
-    private static ArrayList<Partido> listaPartidos;
-    private static ArrayList<Kit> listaKits;
-    private static ArrayList<Compra> listaCompras;
+    // public y static
+    public static ArrayList<Usuario> listaUsuarios;
+    public static ArrayList<Partido> listaPartidos;
+    public static ArrayList<Kit> listaKits;
+    public static ArrayList<Compra> listaCompras;
 
     // ===================== CONSTRUCTOR =====================
     public Sistema(ArrayList<Usuario> listaUsuarios, ArrayList<Partido> listaPartidos,
@@ -305,8 +306,10 @@ public class Sistema {
     }
 
     // ===================== NOTIFICAR (sobrecarga) =====================
+    // static para poder llamarse desde Aficionado/Organizador sin
+    // necesitar una instancia de Sistema.
 
-    public void notificar(Aficionado aficionado, Compra compra, Partido partido) {
+    public static void notificar(Aficionado aficionado, Compra compra, Partido partido) {
         System.out.println("De: correoSistema");
         System.out.println("Para: " + aficionado.getCorreo());
         System.out.println("Asunto: Compra de entrada realizada");
@@ -319,7 +322,7 @@ public class Sistema {
         System.out.println("Gracias por adquirir sus entradas para el Mundial. Recuerde conservar el código de compra para futuras consultas.");
     }
 
-    public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
+    public static void notificar(Aficionado aficionado, Compra compra, Kit kit) {
         System.out.println("De: correoSistema");
         System.out.println("Para: " + aficionado.getCorreo());
         System.out.println("Asunto: Compra de kit de entradas realizada");
@@ -332,7 +335,7 @@ public class Sistema {
         System.out.println("Gracias por adquirir su kit para el Mundial. Recuerde conservar el código de compra para futuras consultas.");
     }
 
-    public void notificar(Organizador organizador, ArrayList<Compra> compras) {
+    public static void notificar(Organizador organizador, ArrayList<Compra> compras) {
         int totalCompras = compras.size();
         int totalEntradas = 0;
         int totalKits = 0;
@@ -360,36 +363,37 @@ public class Sistema {
     }
 
     // ===================== GETTERS Y SETTERS =====================
+    //static para que sean consistentes
 
-    public ArrayList<Usuario> getListaUsuarios() {
+    public static ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
     }
 
-    public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
+    public static void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
         Sistema.listaUsuarios = listaUsuarios;
     }
 
-    public ArrayList<Partido> getListaPartidos() {
+    public static ArrayList<Partido> getListaPartidos() {
         return listaPartidos;
     }
 
-    public void setListaPartidos(ArrayList<Partido> listaPartidos) {
+    public static void setListaPartidos(ArrayList<Partido> listaPartidos) {
         Sistema.listaPartidos = listaPartidos;
     }
 
-    public ArrayList<Kit> getListaKits() {
+    public static ArrayList<Kit> getListaKits() {
         return listaKits;
     }
 
-    public void setListaKits(ArrayList<Kit> listaKits) {
+    public static void setListaKits(ArrayList<Kit> listaKits) {
         Sistema.listaKits = listaKits;
     }
 
-    public ArrayList<Compra> getListaCompras() {
+    public static ArrayList<Compra> getListaCompras() {
         return listaCompras;
     }
 
-    public void setListaCompras(ArrayList<Compra> listaCompras) {
+    public static void setListaCompras(ArrayList<Compra> listaCompras) {
         Sistema.listaCompras = listaCompras;
     }
 
