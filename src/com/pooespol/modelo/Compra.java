@@ -1,7 +1,6 @@
 package com.pooespol.modelo;
-import java.util.Date;
-
 import com.pooespol.enums.TipoCompra;
+import java.util.Date;
 
 public class Compra {
 
@@ -34,12 +33,17 @@ public class Compra {
     }
 
     // ===================== MÉTODOS =====================
-    // Se comenta el método toString() hasta que se establezca lo que se desea imprimir.
-
-    //@Override
-    //public String toString() {
-    //    return;
-    //}
+    
+    @Override
+    public String toString() {
+       return "Código: " + codigo +
+              "\nTipo: " + tipo +
+              "\nCódigo de Referencia: " + codigoReferencia +
+              "\nFecha de compra: " + fechaCompra +
+              "\nCantidad: " + cantidad +
+              "\nValor Pagado: " + valorPagado +
+              "\nCódigo Aficionado: " + codigoAficionado;
+    }
 
     // ===================== GETTERS Y SETTERS =====================
 
