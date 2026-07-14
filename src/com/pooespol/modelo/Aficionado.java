@@ -3,6 +3,7 @@ package com.pooespol.modelo;
 
 import com.pooespol.enums.Rol;
 import com.pooespol.enums.Zona;
+import com.pooespol.sistema.Sistema;
 
 public class Aficionado extends Usuario {
     private String celular;
@@ -24,11 +25,23 @@ public class Aficionado extends Usuario {
         this.rol = Rol.A; // El rol de aficionado siempre es A
     }
 
-    // Implementación temporal: la lógica real depende de la clase Compra que aún no
-    // existe.
+    
     @Override
     public void consultarEntradas() {
-        System.out.println("Consultando entradas como aficionado...");
+        
+        boolean bandera = false;
+
+        for (Compra compra : Sistema.listaCompras){
+            if (compra.getCodigoAficionado().equals(this.getCodigoUnico())){
+                bandera = true;
+                System.out.println(compra);
+            }
+        }
+
+        if (bandera = false){
+            System.out.println("No tienes compras registradas");  
+        }
+
     }
 
     // temporal

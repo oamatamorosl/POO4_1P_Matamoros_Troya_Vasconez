@@ -24,7 +24,7 @@ public class Organizador extends Usuario{
            
         }
 
-    //Método consultarEntradas() Implementación temporal: la lógica real depende de la clase Compra que aún no existe.
+    
         @Override
         public void consultarEntradas(){
         System.out.println("Consultando entradas como organizador...");
