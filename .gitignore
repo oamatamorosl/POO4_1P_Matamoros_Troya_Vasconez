@@ -26,3 +26,5 @@ replay_pid*
 #Ignorar subir archivos basura 
 .LCK*
 *~
+
+!lib/*.jar
