@@ -34,12 +34,17 @@ public class Compra {
     }
 
     // ===================== MÉTODOS =====================
-    // Se comenta el método toString() hasta que se establezca lo que se desea imprimir.
-
-    //@Override
-    //public String toString() {
-    //    return;
-    //}
+  
+    @Override
+    public String toString() {
+        return "Código: " + codigo +
+            "\n Tipo: " + tipo +
+            "\nCódigo  referencia: " + codigoReferencia +
+            "\nFeCha  de compra: " + fechaCompra +
+            "\nCantidad: " + cantidad +
+            "\nValor pagado: " + valorPagado +
+            "\nCódigo  aficionado: " + codigoAficionado;
+    }
 
     // ===================== GETTERS Y SETTERS =====================
 

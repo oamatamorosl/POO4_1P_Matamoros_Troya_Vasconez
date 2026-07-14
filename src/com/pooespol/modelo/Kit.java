@@ -25,13 +25,19 @@ public class Kit {
     }
 
     // ===================== MÉTODOS =====================
-    //Se comenta el método toString() hasta que se establezca lo que se desea imprimir.
-
-    //@Override    
-    //public String toString() {
-    //    return;
-    //}
-
+    @Override
+    public String toString() {
+        String elresultado = "Código: " + codigo +
+            "\nNombre : " + nombre +
+            "\nDeSscripción : " + descripcion +
+            "\nPrecio: " + precio +
+            "\nDisponible : " + disponibles +
+            "\nPartidos incluidos :";
+        for (Partido p : partidos) {
+            elresultado += "\n  - " + p.getLocal() + " vs " + p.getVisitante();
+        }
+        return elresultado;
+    }
     // ===================== GETTERS Y SETTERS =====================
 
     public String getCodigo() {

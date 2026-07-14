@@ -16,33 +16,32 @@ import java.text.SimpleDateFormat;
 
 public class Sistema {
 
-    //  ATRIBUTOS 
-    //Variables estáticas
+    // ===================== ATRIBUTOS =====================
+    private static ArrayList<Usuario> listaUsuarios;
+    private static ArrayList<Partido> listaPartidos;
+    private static ArrayList<Kit> listaKits;
+    private static ArrayList<Compra> listaCompras;
 
-    public static ArrayList<Usuario> listaUsuarios;
-    public static ArrayList<Partido> listaPartidos;
-    public static ArrayList<Kit> listaKits;
-    public static ArrayList<Compra> listaCompras;
-
-    // CONSTRUCTOR 
-
+    // ===================== CONSTRUCTOR =====================
     public Sistema(ArrayList<Usuario> listaUsuarios, ArrayList<Partido> listaPartidos,
                    ArrayList<Kit> listaKits, ArrayList<Compra> listaCompras) {
-        this.listaUsuarios = listaUsuarios;
-        this.listaPartidos = listaPartidos;
-        this.listaKits = listaKits;
-        this.listaCompras = listaCompras;
+        Sistema.listaUsuarios = listaUsuarios;
+        Sistema.listaPartidos = listaPartidos;
+        Sistema.listaKits = listaKits;
+        Sistema.listaCompras = listaCompras;
     }
 
-    //  CARGA DE DATOS 
-    // Se usa la clase ManejoArchivos para leer
- 
+    // ===================== CARGA DE DATOS =====================
+
     public void cargarUsuarios() {
         ArrayList<String> lineasUsuarios = ManejoArchivos.LeeFichero("usuarios.txt");
         ArrayList<String> lineasAficionados = ManejoArchivos.LeeFichero("aficionados.txt");
         ArrayList<String> lineasOrganizadores = ManejoArchivos.LeeFichero("organizadores.txt");
 
+        boolean primeraLineaUsuarios = true;
         for (String linea : lineasUsuarios) {
+            if (primeraLineaUsuarios) { primeraLineaUsuarios = false; continue; }
+
             String[] datos = linea.split("\\|");
             String codigoUnico = datos[0];
             String cedula = datos[1];
@@ -54,7 +53,9 @@ public class Sistema {
             String rolTexto = datos[7];
 
             if (rolTexto.equals("A")) {
+                boolean primeraLineaAf = true;
                 for (String lineaAf : lineasAficionados) {
+                    if (primeraLineaAf) { primeraLineaAf = false; continue; }
                     String[] datosAf = lineaAf.split("\\|");
                     if (datosAf[0].equals(codigoUnico)) {
                         String celular = datosAf[4];
@@ -66,7 +67,9 @@ public class Sistema {
                     }
                 }
             } else if (rolTexto.equals("O")) {
+                boolean primeraLineaOrg = true;
                 for (String lineaOrg : lineasOrganizadores) {
+                    if (primeraLineaOrg) { primeraLineaOrg = false; continue; }
                     String[] datosOrg = lineaOrg.split("\\|");
                     if (datosOrg[0].equals(codigoUnico)) {
                         String empresa = datosOrg[4];
@@ -85,7 +88,9 @@ public class Sistema {
         ArrayList<String> lineas = ManejoArchivos.LeeFichero("partidos.txt");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+        boolean primeraLinea = true;
         for (String linea : lineas) {
+            if (primeraLinea) { primeraLinea = false; continue; }
             String[] d = linea.split("\\|");
             try {
                 String codigo = d[0];
@@ -100,8 +105,6 @@ public class Sistema {
                 int dispVIP = Integer.parseInt(d[9]);
                 String fase = d[10];
 
-                // El documento no incluye precios por zona en partidos.txt,
-                // se dejan en 0.0 (pendiente de aclarar con la docente).
                 double precioGeneral = 0.0;
                 double precioPreferencial = 0.0;
                 double precioVIP = 0.0;
@@ -116,12 +119,12 @@ public class Sistema {
         }
     }
 
-    // Requiere que listaPartidos ya esté cargada, porque resuelve los
-    // códigos de partido del archivo (separados por coma) a objetos Partido.
     public void cargarKits() {
         ArrayList<String> lineas = ManejoArchivos.LeeFichero("kits.txt");
 
+        boolean primeraLinea = true;
         for (String linea : lineas) {
+            if (primeraLinea) { primeraLinea = false; continue; }
             String[] d = linea.split("\\|");
             String codigo = d[0];
             String nombre = d[1];
@@ -149,7 +152,9 @@ public class Sistema {
         ArrayList<String> lineas = ManejoArchivos.LeeFichero("compras.txt");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+        boolean primeraLinea = true;
         for (String linea : lineas) {
+            if (primeraLinea) { primeraLinea = false; continue; }
             String[] d = linea.split("\\|");
             try {
                 String codigoArchivo = d[0];
@@ -161,9 +166,6 @@ public class Sistema {
                 String codigoAficionado = d[6];
 
                 Compra c = new Compra(tipo, codigoReferencia, fechaCompra, cantidad, valorPagado, codigoAficionado);
-                // El constructor genera un código nuevo con el contador
-                // estático; aquí se sobreescribe con el código real que
-                // ya existía en el archivo, para no perder esa referencia.
                 c.setCodigo(codigoArchivo);
                 listaCompras.add(c);
             } catch (Exception e) {
@@ -172,69 +174,67 @@ public class Sistema {
         }
     }
 
-    // SESIÓN Y MENÚ
+    // ===================== SESIÓN Y MENÚ =====================
 
-    // static 
-    //INICIAR SESION
-       public static void iniciarSesion() {
-            Scanner scanner = new Scanner(System.in);
-    
-            System.out.println("===== INICIO DE SESIÓN =====");
-            System.out.print("Usuario: ");
-            String usuarioIngresado = scanner.nextLine();
-    
-            System.out.print("Contraseña: ");
-            String contrasenaIngresada = scanner.nextLine();
-    
-            Usuario usuarioEncontrado = null;
-            for (Usuario u : listaUsuarios) {
-                if (u.getUsuario().equals(usuarioIngresado) && u.getContrasena().equals(contrasenaIngresada)) {
-                    usuarioEncontrado = u;
-                    break;
-                }
+    public static void iniciarSesion() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("===== INICIO DE SESIÓN =====");
+        System.out.print("Usuario: ");
+        String usuarioIngresado = scanner.nextLine();
+
+        System.out.print("Contraseña: ");
+        String contrasenaIngresada = scanner.nextLine();
+
+        Usuario usuarioEncontrado = null;
+        for (Usuario u : listaUsuarios) {
+            if (u.getUsuario().equals(usuarioIngresado) && u.getContrasena().equals(contrasenaIngresada)) {
+                usuarioEncontrado = u;
+                break;
             }
-    
-            if (usuarioEncontrado == null) {
-                System.out.println("Usuario o contraseña incorrectos.");
+        }
+
+        if (usuarioEncontrado == null) {
+            System.out.println("Usuario o contraseña incorrectos.");
+            return;
+        }
+
+        System.out.println("Usuario autenticado correctamente.");
+
+        if (usuarioEncontrado instanceof Aficionado) {
+            Aficionado aficionado = (Aficionado) usuarioEncontrado;
+            System.out.println("Rol detectado: AFICIONADO");
+            System.out.println("Bienvenido/a, " + aficionado.getNombres() + " " + aficionado.getApellidos());
+            System.out.println("Celular registrado: " + aficionado.getCelular());
+            System.out.print("¿Este número de celular es correcto? (S/N): ");
+            String confirmacion = scanner.nextLine();
+            if (confirmacion.equalsIgnoreCase("N")) {
+                System.out.println("Verificación fallida.");
+                System.out.println("Por motivos de seguridad se cerrará la sesión.");
+                System.out.println("Saliendo del sistema...");
                 return;
             }
-    
-            System.out.println("Usuario autenticado correctamente.");
-    
-            if (usuarioEncontrado instanceof Aficionado) {
-                Aficionado aficionado = (Aficionado) usuarioEncontrado;
-                System.out.println("Rol detectado: AFICIONADO");
-                System.out.println("Bienvenido/a, " + aficionado.getNombres() + " " + aficionado.getApellidos());
-                System.out.println("Celular registrado: " + aficionado.getCelular());
-                System.out.print("¿Este número de celular es correcto? (S/N): ");
-                String confirmacion = scanner.nextLine();
-                if (confirmacion.equalsIgnoreCase("N")) {
-                    System.out.println("Verificación fallida.");
-                    System.out.println("Por motivos de seguridad se cerrará la sesión.");
-                    System.out.println("Saliendo del sistema...");
-                    return;
-                }
-                System.out.println("Identidad confirmada.");
-                mostrarMenu(aficionado);
-    
-            } else if (usuarioEncontrado instanceof Organizador) {
-                Organizador organizador = (Organizador) usuarioEncontrado;
-                System.out.println("Rol detectado: ORGANIZADOR");
-                System.out.println("Bienvenido/a, " + organizador.getNombres() + " " + organizador.getApellidos());
-                System.out.println("Empresa asignada: " + organizador.getEmpresa());
-                System.out.print("¿Esta empresa es correcta? (S/N): ");
-                String confirmacion = scanner.nextLine();
-                if (confirmacion.equalsIgnoreCase("N")) {
-                    System.out.println("Verificación fallida.");
-                    System.out.println("Por motivos de seguridad se cerrará la sesión.");
-                    System.out.println("Saliendo del sistema...");
-                    return;
-                }
-                System.out.println("Identidad confirmada.");
-                mostrarMenu(organizador);
+            System.out.println("Identidad confirmada.");
+            mostrarMenu(aficionado);
+
+        } else if (usuarioEncontrado instanceof Organizador) {
+            Organizador organizador = (Organizador) usuarioEncontrado;
+            System.out.println("Rol detectado: ORGANIZADOR");
+            System.out.println("Bienvenido/a, " + organizador.getNombres() + " " + organizador.getApellidos());
+            System.out.println("Empresa asignada: " + organizador.getEmpresa());
+            System.out.print("¿Esta empresa es correcta? (S/N): ");
+            String confirmacion = scanner.nextLine();
+            if (confirmacion.equalsIgnoreCase("N")) {
+                System.out.println("Verificación fallida.");
+                System.out.println("Por motivos de seguridad se cerrará la sesión.");
+                System.out.println("Saliendo del sistema...");
+                return;
             }
+            System.out.println("Identidad confirmada.");
+            mostrarMenu(organizador);
+        }
     }
-//MOSTRAR EL MENU
+
     public static void mostrarMenu(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
 
@@ -251,6 +251,7 @@ public class Sistema {
                 System.out.println("5. Salir");
                 System.out.print("Seleccione una opción: ");
                 opcion = scanner.nextInt();
+                scanner.nextLine();
 
                 switch (opcion) {
                     case 1:
@@ -284,6 +285,7 @@ public class Sistema {
                 System.out.println("3. Salir");
                 System.out.print("Seleccione una opción: ");
                 opcion = scanner.nextInt();
+                scanner.nextLine();
 
                 switch (opcion) {
                     case 1:
@@ -301,8 +303,8 @@ public class Sistema {
             }
         }
     }
-    // NOTIFICAR (sobrecarga) 
-    //Se sobrecarga el método con atributos de diferentes tipos.
+
+    // ===================== NOTIFICAR (sobrecarga) =====================
 
     public void notificar(Aficionado aficionado, Compra compra, Partido partido) {
         System.out.println("De: correoSistema");
@@ -317,7 +319,7 @@ public class Sistema {
         System.out.println("Gracias por adquirir sus entradas para el Mundial. Recuerde conservar el código de compra para futuras consultas.");
     }
 
-public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
+    public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
         System.out.println("De: correoSistema");
         System.out.println("Para: " + aficionado.getCorreo());
         System.out.println("Asunto: Compra de kit de entradas realizada");
@@ -357,14 +359,14 @@ public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
         System.out.println("Monto total recaudado: $" + montoTotal);
     }
 
-    // GETTERS Y SETTERS 
+    // ===================== GETTERS Y SETTERS =====================
 
     public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
     }
 
     public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
-        this.listaUsuarios = listaUsuarios;
+        Sistema.listaUsuarios = listaUsuarios;
     }
 
     public ArrayList<Partido> getListaPartidos() {
@@ -372,7 +374,7 @@ public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
     }
 
     public void setListaPartidos(ArrayList<Partido> listaPartidos) {
-        this.listaPartidos = listaPartidos;
+        Sistema.listaPartidos = listaPartidos;
     }
 
     public ArrayList<Kit> getListaKits() {
@@ -380,7 +382,7 @@ public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
     }
 
     public void setListaKits(ArrayList<Kit> listaKits) {
-        this.listaKits = listaKits;
+        Sistema.listaKits = listaKits;
     }
 
     public ArrayList<Compra> getListaCompras() {
@@ -388,12 +390,22 @@ public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
     }
 
     public void setListaCompras(ArrayList<Compra> listaCompras) {
-        this.listaCompras = listaCompras;
+        Sistema.listaCompras = listaCompras;
     }
 
-    //  MAIN 
-    //Se define el main en esta clase ya que es la principal, desde donde se ejecutará el programa.
+    // ===================== MAIN =====================
     public static void main(String[] args) {
+        listaUsuarios = new ArrayList<>();
+        listaPartidos = new ArrayList<>();
+        listaKits = new ArrayList<>();
+        listaCompras = new ArrayList<>();
 
+        Sistema sistema = new Sistema(listaUsuarios, listaPartidos, listaKits, listaCompras);
+        sistema.cargarUsuarios();
+        sistema.cargarPartidos();
+        sistema.cargarKits();
+        sistema.cargarCompras();
+
+        iniciarSesion();
     }
 }
