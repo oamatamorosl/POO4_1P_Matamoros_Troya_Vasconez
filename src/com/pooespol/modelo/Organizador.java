@@ -26,7 +26,8 @@ public class Organizador extends Usuario{
            
         }
 
-    
+// Método consultarEntradas()
+
         @Override
         public void consultarEntradas(){
             boolean bandera = false;
@@ -42,7 +43,7 @@ public class Organizador extends Usuario{
      }
     
      
-
+// Método generarReporte()
      public void generarReporte(){
 
         int totalEntradas = 0;
@@ -68,7 +69,9 @@ public class Organizador extends Usuario{
         System.out.println("Compras por tipo: ");
         System.out.println("Entradas: " + totalEntradas);
         System.out.println("Kits: " + totalKits);
-         System.out.println("Monto total recaudado: " + totalRecaudado);
+        System.out.println("Monto total recaudado: " + totalRecaudado);
+
+        Sistema.notificar(this, Sistema.listaCompras);
      }
 
 

@@ -1,8 +1,4 @@
 package com.pooespol.sistema;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
-
 import com.pooespol.enums.TipoCompra;
 import com.pooespol.modelo.Aficionado;
 import com.pooespol.modelo.Compra;
@@ -11,8 +7,10 @@ import com.pooespol.modelo.Organizador;
 import com.pooespol.modelo.Partido;
 import com.pooespol.modelo.Usuario;
 import com.pooespol.util.ManejoArchivos;
-
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
 
 public class Sistema {
 
@@ -304,7 +302,7 @@ public class Sistema {
     // NOTIFICAR (sobrecarga) 
     //Se sobrecarga el método con atributos de diferentes tipos.
 
-    public void notificar(Aficionado aficionado, Compra compra, Partido partido) {
+    public static void notificar(Aficionado aficionado, Compra compra, Partido partido) {
         System.out.println("De: correoSistema");
         System.out.println("Para: " + aficionado.getCorreo());
         System.out.println("Asunto: Compra de entrada realizada");
@@ -317,7 +315,7 @@ public class Sistema {
         System.out.println("Gracias por adquirir sus entradas para el Mundial. Recuerde conservar el código de compra para futuras consultas.");
     }
 
-public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
+public static void notificar(Aficionado aficionado, Compra compra, Kit kit) {
         System.out.println("De: correoSistema");
         System.out.println("Para: " + aficionado.getCorreo());
         System.out.println("Asunto: Compra de kit de entradas realizada");
@@ -330,7 +328,7 @@ public void notificar(Aficionado aficionado, Compra compra, Kit kit) {
         System.out.println("Gracias por adquirir su kit para el Mundial. Recuerde conservar el código de compra para futuras consultas.");
     }
 
-    public void notificar(Organizador organizador, ArrayList<Compra> compras) {
+    public static void notificar(Organizador organizador, ArrayList<Compra> compras) {
         int totalCompras = compras.size();
         int totalEntradas = 0;
         int totalKits = 0;
