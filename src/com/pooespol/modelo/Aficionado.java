@@ -38,7 +38,7 @@ public class Aficionado extends Usuario {
             }
         }
 
-        if (bandera = false){
+        if (bandera == false){
             System.out.println("No tienes compras registradas");  
         }
 

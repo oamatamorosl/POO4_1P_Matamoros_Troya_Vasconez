@@ -2,6 +2,7 @@ package com.pooespol.modelo;
 //Organizador clase hija de Usuario
 
 import com.pooespol.enums.Rol;
+import com.pooespol.sistema.Sistema;
 
 public class Organizador extends Usuario{
         private String empresa;
@@ -27,11 +28,19 @@ public class Organizador extends Usuario{
     
         @Override
         public void consultarEntradas(){
-        System.out.println("Consultando entradas como organizador...");
+            boolean bandera = false;
 
+            for (Compra compra : Sistema.listaCompras){
+                bandera = true;
+                System.out.println(compra);
+            }
+
+            if (bandera == false){
+                System.out.println("No existen compras");
+            }
      }
     
-     //Método generarReporte() Implementación temporal: la lógica real depende de clases que aún no existen.
+     
 
      public void generarReporte(){
         System.out.println("Generando reporte...");
