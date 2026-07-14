@@ -44,10 +44,12 @@ public class Aficionado extends Usuario {
 
     }
 
-    // temporal
-
     public void consultarPartidos() {
-        System.out.println("Consultando partidos...");
+        for (Partido partido : Sistema.listaPartidos){
+            System.out.println(partido);
+            System.out.println("--------------------");
+        }
+
     }
 
     public void comprar(Partido partido, Zona zona, int cantidad, String tarjeta) {
