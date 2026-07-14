@@ -14,6 +14,18 @@ import com.pooespol.util.ManejoArchivos;
 
 import java.text.SimpleDateFormat;
 
+//todo lo necesario para lo del Mundial
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.Authenticator;
+
+
 public class Sistema {
 
     // ===================== ATRIBUTOS =====================
@@ -22,6 +34,8 @@ public class Sistema {
     public static ArrayList<Partido> listaPartidos;
     public static ArrayList<Kit> listaKits;
     public static ArrayList<Compra> listaCompras;
+    private static final String CORREO_SISTEMA = "oamatamorosuni@gmail.com";
+    private static final String CONTRASENA_SISTEMA = "ohok zgfd whaz uvhe";    
 
     // ===================== CONSTRUCTOR =====================
     public Sistema(ArrayList<Usuario> listaUsuarios, ArrayList<Partido> listaPartidos,
@@ -310,30 +324,37 @@ public class Sistema {
     // necesitar una instancia de Sistema.
 
     public static void notificar(Aficionado aficionado, Compra compra, Partido partido) {
-        System.out.println("De: correoSistema");
+        System.out.println("\n--- NOTIFICACIÓN ENVIADA ---");
         System.out.println("Para: " + aficionado.getCorreo());
         System.out.println("Asunto: Compra de entrada realizada");
-        System.out.println("Estimado/a " + aficionado.getNombres() + " " + aficionado.getApellidos() + ",");
-        System.out.println("Su compra ha sido registrada exitosamente con el código " + compra.getCodigo() + " el día " + compra.getFechaCompra() + ".");
-        System.out.println("Partido: " + partido.getLocal() + " vs " + partido.getVisitante());
-        System.out.println("Código del partido: " + compra.getCodigoReferencia());
-        System.out.println("Cantidad: " + compra.getCantidad());
-        System.out.println("Valor pagado: $" + compra.getValorPagado());
-        System.out.println("Gracias por adquirir sus entradas para el Mundial. Recuerde conservar el código de compra para futuras consultas.");
+
+        String cuerpo = "Estimado/a " + aficionado.getNombres() + " " + aficionado.getApellidos() + ",\n\n" +
+                "Su compra ha sido registrada exitosamente con el código " + compra.getCodigo() + " el día " + compra.getFechaCompra() + ".\n" +
+                "Partido: " + partido.getLocal() + " vs " + partido.getVisitante() + "\n" +
+                "Código del partido: " + compra.getCodigoReferencia() + "\n" +
+                "Cantidad: " + compra.getCantidad() + "\n" +
+                "Valor pagado: $" + compra.getValorPagado() + "\n\n" +
+                "Gracias por adquirir sus entradas para el Mundial. Recuerde conservar el código de compra para futuras consultas.";
+
+        enviarCorreo(aficionado.getCorreo(), "Compra de entrada realizada", cuerpo);// Aquí llama al método que permite enviar el correo
     }
 
     public static void notificar(Aficionado aficionado, Compra compra, Kit kit) {
-        System.out.println("De: correoSistema");
+        System.out.println("\n--- NOTIFICACIÓN ENVIADA ---");
         System.out.println("Para: " + aficionado.getCorreo());
         System.out.println("Asunto: Compra de kit de entradas realizada");
-        System.out.println("Estimado/a " + aficionado.getNombres() + " " + aficionado.getApellidos() + ",");
-        System.out.println("Su compra ha sido registrada exitosamente con el código " + compra.getCodigo() + " el día " + compra.getFechaCompra() + ".");
-        System.out.println("Kit adquirido: " + kit.getNombre());
-        System.out.println("Descripción: " + kit.getDescripcion());
-        System.out.println("Cantidad: " + compra.getCantidad());
-        System.out.println("Valor pagado: $" + compra.getValorPagado());
-        System.out.println("Gracias por adquirir su kit para el Mundial. Recuerde conservar el código de compra para futuras consultas.");
+
+        String cuerpo = "Estimado/a " + aficionado.getNombres() + " " + aficionado.getApellidos() + ",\n\n" +
+                "Su compra ha sido registrada exitosamente con el código " + compra.getCodigo() + " el día " + compra.getFechaCompra() + ".\n" +
+                "Kit adquirido: " + kit.getNombre() + "\n" +
+                "Descripción: " + kit.getDescripcion() + "\n" +
+                "Cantidad: " + compra.getCantidad() + "\n" +
+                "Valor pagado: $" + compra.getValorPagado() + "\n\n" +
+                "Gracias por adquirir su kit para el Mundial. Recuerde conservar el código de compra para futuras consultas.";
+
+        enviarCorreo(aficionado.getCorreo(), "Compra de kit de entradas realizada", cuerpo);// Aquí llama al método que permite enviar el correo
     }
+
 
     public static void notificar(Organizador organizador, ArrayList<Compra> compras) {
         int totalCompras = compras.size();
@@ -350,17 +371,48 @@ public class Sistema {
             montoTotal += c.getValorPagado();
         }
 
-        System.out.println("De: correoSistema");
+        System.out.println("\n--- NOTIFICACIÓN ENVIADA ---");
         System.out.println("Para: " + organizador.getCorreo());
         System.out.println("Asunto: Reporte de compras registradas");
-        System.out.println("Estimado/a " + organizador.getNombres() + " " + organizador.getApellidos() + ",");
-        System.out.println("Se ha generado el reporte de compras del sistema.");
-        System.out.println("Fecha de generación del reporte: " + new Date());
-        System.out.println("Total de compras registradas: " + totalCompras);
-        System.out.println("Total de compras de entradas individuales: " + totalEntradas);
-        System.out.println("Total de compras de kits: " + totalKits);
-        System.out.println("Monto total recaudado: $" + montoTotal);
+
+        String cuerpo = "Estimado/a " + organizador.getNombres() + " " + organizador.getApellidos() + ",\n\n" +
+                "Se ha generado el reporte de compras del sistema.\n" +
+                "Fecha de generación del reporte: " + new Date() + "\n" +
+                "Total de compras registradas: " + totalCompras + "\n" +
+                "Total de compras de entradas individuales: " + totalEntradas + "\n" +
+                "Total de compras de kits: " + totalKits + "\n" +
+                "Monto total recaudado: $" + montoTotal;
+
+        enviarCorreo(organizador.getCorreo(), "Reporte de compras registradas", cuerpo);// Aquí llama al método que permite enviar el correo
     }
+
+    private static void enviarCorreo(String destinatario, String asunto, String cuerpo) { 
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(CORREO_SISTEMA, CONTRASENA_SISTEMA);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(CORREO_SISTEMA));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+            message.setSubject(asunto);
+            message.setText(cuerpo);
+            Transport.send(message);
+            System.out.println("Correo enviado exitosamente a: " + destinatario);
+        } catch (MessagingException e) {
+            System.out.println("Error al enviar correo: " + e.getMessage());
+        }
+    }
+
+
 
     // ===================== GETTERS Y SETTERS =====================
     //static para que sean consistentes
@@ -409,6 +461,8 @@ public class Sistema {
         sistema.cargarPartidos();
         sistema.cargarKits();
         sistema.cargarCompras();
+
+ 
 
         iniciarSesion();
     }
