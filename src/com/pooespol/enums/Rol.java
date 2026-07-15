@@ -1,5 +1,15 @@
 package com.pooespol.enums;
+
+/**
+ * Enumeración que define los roles disponibles en el sistema.
+ *
+ * @author Aidan Troya
+ * @author Oscar Matamoros
+ * @version 1.0
+ */
 public enum Rol {
-    A, //Tipo Aficionado
-    O  //Tipo Organizador
+    /** Rol de aficionado. */
+    A,
+    /** Rol de organizador. */
+    O
 }

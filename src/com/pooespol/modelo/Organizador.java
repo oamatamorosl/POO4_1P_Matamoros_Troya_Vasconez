@@ -5,11 +5,35 @@ import com.pooespol.enums.Rol;
 import com.pooespol.enums.TipoCompra;
 import com.pooespol.sistema.Sistema;
 
+/**
+ * Clase que representa a un organizador del Mundial.
+ * Hereda de Usuario y permite consultar todas las compras
+ * del sistema y generar reportes de ventas.
+ *
+ * @author Sebastian Vasconez
+ * @version 1.0
+ */
 public class Organizador extends Usuario{
-private String empresa;
-private String cargo;
 
-//Constructor clase Organizador 
+    /** Empresa organizadora a la que pertenece. */
+    private String empresa;
+
+    /** Cargo del organizador dentro de la empresa. */
+    private String cargo;
+
+    /**
+     * Constructor clase Organizador.
+     *
+     * @param codigoUnico código único del organizador
+     * @param cedula cédula del organizador
+     * @param nombres nombres del organizador
+     * @param apellidos apellidos del organizador
+     * @param usuario nombre de usuario para iniciar sesión
+     * @param contrasena contraseña del organizador
+     * @param correo correo electrónico del organizador
+     * @param empresa empresa organizadora
+     * @param cargo cargo del organizador
+     */
 public Organizador(String codigoUnico, String cedula, String nombres, 
                     String apellidos, String usuario, String contrasena, 
                     String correo, String empresa, String cargo){
@@ -25,8 +49,10 @@ this.cargo = cargo;
 this.rol = Rol.O; //El rol de organizador siempre es O   
 }
 
-// Método consultarEntradas()
-
+    /**
+     * Muestra todas las compras registradas en el sistema.
+     * Sobrescribe el método abstracto de Usuario.
+     */
 @Override
 public void consultarEntradas(){
 boolean bandera = false;
@@ -40,7 +66,12 @@ if (bandera == false){
                 System.out.println("No existen compras");
 }
 }
-// Método generarReporte()
+
+    /**
+     * Genera un reporte de ventas con el total de compras,
+     * cantidad por tipo y monto total recaudado.
+     * Envía el reporte por correo al organizador.
+     */
 public void generarReporte(){
 
 int totalEntradas = 0;
@@ -72,26 +103,49 @@ if (compra.getTipo() == TipoCompra.ENTRADA){
 
 //Getters
 
+    /**
+     * Retorna la empresa del organizador.
+     *
+     * @return empresa
+     */
 public String getEmpresa(){
 return empresa;
 }
 
+    /**
+     * Retorna el cargo del organizador.
+     *
+     * @return cargo
+     */
 public String getCargo(){
 return cargo;
 }
 
 //Setters
 
+    /**
+     * Establece la empresa del organizador.
+     *
+     * @param empresa empresa organizadora
+     */
 public void setEmpresa(String empresa){
 this.empresa = empresa;
 }
 
+    /**
+     * Establece el cargo del organizador.
+     *
+     * @param cargo cargo del organizador
+     */
 public void setCargo(String cargo){
 this.cargo = cargo;
 }
 
-//Sobrescritura de toString() con super.toString()
-
+    /**
+     * Retorna una representación en texto del organizador.
+     *
+     * @return String con los datos del organizador
+     */
 @Override
 public String toString(){
 return super.toString() + 

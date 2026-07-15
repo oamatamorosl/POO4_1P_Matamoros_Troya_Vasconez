@@ -26,20 +26,49 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.Authenticator;
 
-
+/**
+ * Clase principal del sistema de venta y gestión de entradas para el Mundial.
+ * Gestiona la carga de datos, inicio de sesión, menús, notificaciones
+ * y persistencia de compras.
+ *
+ * @author Aidan Troya
+ * @author Oscar Matamoros
+ * @author Sebastian Vasconez
+ * @version 1.0
+ */
 public class Sistema {
 
     // ===================== ATRIBUTOS =====================
     // public y static
-    
+
+    /** Lista polimórfica de usuarios del sistema. */
     public static ArrayList<Usuario> listaUsuarios;
+
+    /** Lista de partidos disponibles. */
     public static ArrayList<Partido> listaPartidos;
+
+    /** Lista de kits disponibles. */
     public static ArrayList<Kit> listaKits;
+
+    /** Lista de compras realizadas. */
     public static ArrayList<Compra> listaCompras;
+
+    /** Correo remitente del sistema. */
     private static final String CORREO_SISTEMA = "oamatamorosuni@gmail.com";
-    private static final String CONTRASENA_SISTEMA = "ohok zgfd whaz uvhe";    
+
+    /** Contraseña de aplicación del correo del sistema. */
+    private static final String CONTRASENA_SISTEMA = "ohok zgfd whaz uvhe";
 
     // ===================== CONSTRUCTOR =====================
+
+    /**
+     * Constructor de la clase Sistema.
+     *
+     * @param listaUsuarios lista de usuarios
+     * @param listaPartidos lista de partidos
+     * @param listaKits lista de kits
+     * @param listaCompras lista de compras
+     */
     public Sistema(ArrayList<Usuario> listaUsuarios, ArrayList<Partido> listaPartidos,
                    ArrayList<Kit> listaKits, ArrayList<Compra> listaCompras) {
         Sistema.listaUsuarios = listaUsuarios;
@@ -50,6 +79,11 @@ public class Sistema {
 
     // ===================== CARGA DE DATOS =====================
 
+    /**
+     * Carga los usuarios desde los archivos usuarios.txt,
+     * aficionados.txt y organizadores.txt.
+     * Crea objetos Aficionado u Organizador según el rol.
+     */
     public void cargarUsuarios() {
         ArrayList<String> lineasUsuarios = ManejoArchivos.LeeFichero("usuarios.txt");
         ArrayList<String> lineasAficionados = ManejoArchivos.LeeFichero("aficionados.txt");
@@ -101,6 +135,10 @@ public class Sistema {
         }
     }
 
+    /**
+     * Carga los partidos desde el archivo partidos.txt.
+     * Crea objetos Partido con los datos de cada línea.
+     */
     public void cargarPartidos() {
         ArrayList<String> lineas = ManejoArchivos.LeeFichero("partidos.txt");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -136,6 +174,10 @@ public class Sistema {
         }
     }
 
+    /**
+     * Carga los kits desde el archivo kits.txt.
+     * Requiere que listaPartidos esté cargada previamente.
+     */
     public void cargarKits() {
         ArrayList<String> lineas = ManejoArchivos.LeeFichero("kits.txt");
 
@@ -165,9 +207,13 @@ public class Sistema {
         }
     }
 
+    /**
+     * Carga las compras desde el archivo compras.txt.
+     * Crea objetos Compra con los datos de cada línea.
+     */
     public void cargarCompras() {
         ArrayList<String> lineas = ManejoArchivos.LeeFichero("compras.txt");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", java.util.Locale.ENGLISH);
 
         boolean primeraLinea = true;
         for (String linea : lineas) {
@@ -193,6 +239,10 @@ public class Sistema {
 
     // ===================== SESIÓN Y MENÚ =====================
 
+    /**
+     * Permite al usuario ingresar sus credenciales y acceder al sistema.
+     * Verifica la identidad según el tipo de usuario y muestra el menú correspondiente.
+     */
     public static void iniciarSesion() {
         Scanner scanner = new Scanner(System.in);
 
@@ -252,6 +302,12 @@ public class Sistema {
         }
     }
 
+    /**
+     * Muestra el menú correspondiente según el tipo de usuario.
+     * Usa downcasting para identificar si es Aficionado u Organizador.
+     *
+     * @param usuario usuario autenticado en el sistema
+     */
     public static void mostrarMenu(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
 
@@ -391,6 +447,13 @@ public class Sistema {
     // static para poder llamarse desde Aficionado/Organizador sin
     // necesitar una instancia de Sistema.
 
+    /**
+     * Envía una notificación por correo al aficionado al comprar una entrada.
+     *
+     * @param aficionado aficionado que realizó la compra
+     * @param compra compra realizada
+     * @param partido partido al que corresponde la entrada
+     */
     public static void notificar(Aficionado aficionado, Compra compra, Partido partido) {
         System.out.println("\n--- NOTIFICACIÓN ENVIADA ---");
         System.out.println("Para: " + aficionado.getCorreo());
@@ -407,6 +470,13 @@ public class Sistema {
         enviarCorreo(aficionado.getCorreo(), "Compra de entrada realizada", cuerpo);// Aquí llama al método que permite enviar el correo
     }
 
+    /**
+     * Envía una notificación por correo al aficionado al comprar un kit.
+     *
+     * @param aficionado aficionado que realizó la compra
+     * @param compra compra realizada
+     * @param kit kit adquirido
+     */
     public static void notificar(Aficionado aficionado, Compra compra, Kit kit) {
         System.out.println("\n--- NOTIFICACIÓN ENVIADA ---");
         System.out.println("Para: " + aficionado.getCorreo());
@@ -423,7 +493,12 @@ public class Sistema {
         enviarCorreo(aficionado.getCorreo(), "Compra de kit de entradas realizada", cuerpo);// Aquí llama al método que permite enviar el correo
     }
 
-
+    /**
+     * Envía una notificación por correo al organizador con el reporte de ventas.
+     *
+     * @param organizador organizador que generó el reporte
+     * @param compras lista de compras registradas en el sistema
+     */
     public static void notificar(Organizador organizador, ArrayList<Compra> compras) {
         int totalCompras = compras.size();
         int totalEntradas = 0;
@@ -454,7 +529,14 @@ public class Sistema {
         enviarCorreo(organizador.getCorreo(), "Reporte de compras registradas", cuerpo);// Aquí llama al método que permite enviar el correo
     }
 
-    private static void enviarCorreo(String destinatario, String asunto, String cuerpo) { 
+    /**
+     * Método auxiliar que envía un correo electrónico usando JavaMail.
+     *
+     * @param destinatario correo del destinatario
+     * @param asunto asunto del correo
+     * @param cuerpo cuerpo del correo
+     */
+    private static void enviarCorreo(String destinatario, String asunto, String cuerpo) {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -483,44 +565,89 @@ public class Sistema {
         }
     }
 
-
-
     // ===================== GETTERS Y SETTERS =====================
     //static para que sean consistentes
 
+    /**
+     * Retorna la lista de usuarios del sistema.
+     *
+     * @return lista de usuarios
+     */
     public static ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
     }
 
+    /**
+     * Establece la lista de usuarios del sistema.
+     *
+     * @param listaUsuarios lista de usuarios
+     */
     public static void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
         Sistema.listaUsuarios = listaUsuarios;
     }
 
+    /**
+     * Retorna la lista de partidos del sistema.
+     *
+     * @return lista de partidos
+     */
     public static ArrayList<Partido> getListaPartidos() {
         return listaPartidos;
     }
 
+    /**
+     * Establece la lista de partidos del sistema.
+     *
+     * @param listaPartidos lista de partidos
+     */
     public static void setListaPartidos(ArrayList<Partido> listaPartidos) {
         Sistema.listaPartidos = listaPartidos;
     }
 
+    /**
+     * Retorna la lista de kits del sistema.
+     *
+     * @return lista de kits
+     */
     public static ArrayList<Kit> getListaKits() {
         return listaKits;
     }
 
+    /**
+     * Establece la lista de kits del sistema.
+     *
+     * @param listaKits lista de kits
+     */
     public static void setListaKits(ArrayList<Kit> listaKits) {
         Sistema.listaKits = listaKits;
     }
 
+    /**
+     * Retorna la lista de compras del sistema.
+     *
+     * @return lista de compras
+     */
     public static ArrayList<Compra> getListaCompras() {
         return listaCompras;
     }
 
+    /**
+     * Establece la lista de compras del sistema.
+     *
+     * @param listaCompras lista de compras
+     */
     public static void setListaCompras(ArrayList<Compra> listaCompras) {
         Sistema.listaCompras = listaCompras;
     }
 
     // ===================== MAIN =====================
+
+    /**
+     * Método principal que inicializa el sistema, carga los datos
+     * de los archivos y lanza el proceso de inicio de sesión.
+     *
+     * @param args argumentos de la línea de comandos
+     */
     public static void main(String[] args) {
         listaUsuarios = new ArrayList<>();
         listaPartidos = new ArrayList<>();
@@ -532,8 +659,6 @@ public class Sistema {
         sistema.cargarPartidos();
         sistema.cargarKits();
         sistema.cargarCompras();
-
- 
 
         iniciarSesion();
     }

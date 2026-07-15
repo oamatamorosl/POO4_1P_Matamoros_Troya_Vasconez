@@ -4,13 +4,39 @@ import com.pooespol.enums.TipoCompra;
 import com.pooespol.enums.Zona;
 import com.pooespol.sistema.Sistema;
 import com.pooespol.util.ManejoArchivos;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Clase que representa a un aficionado del Mundial.
+ * Hereda de Usuario y permite consultar partidos, comprar
+ * entradas individuales y kits de entradas.
+ *
+ * @author Sebastian Vasconez
+ * @version 1.0
+ */
 public class Aficionado extends Usuario {
+
+    /** Número de celular del aficionado. */
     private String celular;
+
+    /** País favorito del aficionado. */
     private String paisFavorito;
 
-    // Constructor clase Aficionado
+    /**
+     * Constructor clase Aficionado.
+     *
+     * @param codigoUnico código único del aficionado
+     * @param cedula cédula del aficionado
+     * @param nombres nombres del aficionado
+     * @param apellidos apellidos del aficionado
+     * @param usuario nombre de usuario para iniciar sesión
+     * @param contrasena contraseña del aficionado
+     * @param correo correo electrónico del aficionado
+     * @param celular número de celular del aficionado
+     * @param paisFavorito país favorito del aficionado
+     */
     public Aficionado(String codigoUnico, String cedula, String nombres,
             String apellidos, String usuario, String contrasena,
             String correo, String celular, String paisFavorito) {
@@ -26,7 +52,10 @@ public class Aficionado extends Usuario {
         this.rol = Rol.A; // El rol de aficionado siempre es A
     }
 
-//Método consultarEntradas()  
+    /**
+     * Muestra las compras realizadas por este aficionado.
+     * Sobrescribe el método abstracto de Usuario.
+     */
     @Override
     public void consultarEntradas() {
 
@@ -45,8 +74,9 @@ public class Aficionado extends Usuario {
 
     }
 
-// Método consultarPartidos()
-
+    /**
+     * Muestra todos los partidos disponibles en el sistema.
+     */
     public void consultarPartidos() {
         for (Partido partido : Sistema.listaPartidos){
             System.out.println(partido);
@@ -54,7 +84,16 @@ public class Aficionado extends Usuario {
         }
     }
 
- // Método comprar() para Entrada
+    /**
+     * Compra una entrada para un partido específico.
+     * Valida el stock, calcula el total, registra la compra
+     * y envía notificación al aficionado.
+     *
+     * @param partido partido para el que se compra la entrada
+     * @param zona zona de la entrada (GENERAL, PREFERENCIAL, VIP)
+     * @param cantidad número de entradas a comprar
+     * @param tarjeta número de tarjeta para el pago
+     */
     public void comprar(Partido partido, Zona zona, int cantidad, String tarjeta) {
 
         double precio = 0;
@@ -114,8 +153,8 @@ public class Aficionado extends Usuario {
 
 
            //Registrar compra entrada
-            String linea = compra.getCodigo() + "|" + compra.getTipo() + "|" + compra.getCodigoReferencia() + "|" + compra.getFechaCompra() + "|" + compra.getCantidad() + "|" + compra.getValorPagado() + "|" + compra.getCodigoAficionado();
-
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", java.util.Locale.ENGLISH);
+            String linea = compra.getCodigo() + "|" + compra.getTipo() + "|" + compra.getCodigoReferencia() + "|" + sdf.format(compra.getFechaCompra()) + "|" + compra.getCantidad() + "|" + compra.getValorPagado() + "|" + compra.getCodigoAficionado();
             ManejoArchivos.EscribirArchivo("compras.txt", linea);
 
 
@@ -130,7 +169,14 @@ public class Aficionado extends Usuario {
 
     }
 
-    // Método comprar() para Kit
+    /**
+     * Compra un kit de entradas predefinido.
+     * Valida disponibilidad, registra la compra
+     * y envía notificación al aficionado.
+     *
+     * @param kit kit de entradas a comprar
+     * @param tarjeta número de tarjeta para el pago
+     */
     public void comprar(Kit kit, String tarjeta) {
 
         if (kit.getDisponibles() < 1) {
@@ -148,34 +194,60 @@ public class Aficionado extends Usuario {
 
         //Notificación
         Sistema.notificar(this, compra, kit);
+        
 
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", java.util.Locale.ENGLISH);
+        String linea = compra.getCodigo() + "|" + compra.getTipo() + "|" + compra.getCodigoReferencia() + "|" + sdf.format(compra.getFechaCompra()) + "|" + compra.getCantidad() + "|" + compra.getValorPagado() + "|" + compra.getCodigoAficionado();
         //Registrar compra kit
-        String linea = compra.getCodigo() + "|" + compra.getTipo() + "|" + compra.getCodigoReferencia() + "|" + compra.getFechaCompra() + "|" + compra.getCantidad() + "|" + compra.getValorPagado() + "|" + compra.getCodigoAficionado();
         ManejoArchivos.EscribirArchivo("compras.txt", linea);
+
     }
 
     // Getters
 
+    /**
+     * Retorna el celular del aficionado.
+     *
+     * @return celular
+     */
     public String getCelular() {
         return celular;
     }
 
+    /**
+     * Retorna el país favorito del aficionado.
+     *
+     * @return paisFavorito
+     */
     public String getPaisFavorito() {
         return paisFavorito;
     }
 
     // Setters
 
+    /**
+     * Establece el celular del aficionado.
+     *
+     * @param celular número de celular
+     */
     public void setCelular(String celular) {
         this.celular = celular;
     }
 
+    /**
+     * Establece el país favorito del aficionado.
+     *
+     * @param paisFavorito país favorito
+     */
     public void setPaisFavorito(String paisFavorito) {
         this.paisFavorito = paisFavorito;
     }
 
-    // Sobrescritura de toString() con super.toString()
-
+    /**
+     * Retorna una representación en texto del aficionado.
+     *
+     * @return String con los datos del aficionado
+     */
     @Override
     public String toString() {
         return super.toString() +
